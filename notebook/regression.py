@@ -4,11 +4,13 @@ import pandas as pd
 import os
 
 # 列出输入目录下的文件（验证数据路径是否正确）
+# en français: lister les fichiers dans le répertoire d'entrée (vérifier le chemin d'accès aux données)
 for dirname, _, filenames in os.walk("/kaggle/input/insa-ml-2025-regression"):
     for filename in filenames:
         print(os.path.join(dirname, filename))
 
 # 加载数据
+# en français: charger les données
 train_df = pd.read_csv("/kaggle/input/insa-ml-2025-regression/train.csv")
 test_df = pd.read_csv("/kaggle/input/insa-ml-2025-regression/test.csv")
 sample_submission = pd.read_csv(
@@ -16,10 +18,12 @@ sample_submission = pd.read_csv(
 )
 
 # 查看数据结构
+# en français: voir la structure des données
 print("Train shape:", train_df.shape)
 print("Test shape:", test_df.shape)
 
 # 将训练集和测试集合并，便于统一处理分类变量（注意保留目标变量信息）
+# en français: fusionner les ensembles d'entraînement et de test pour un traitement uniforme des variables catégorielles (en conservant les informations sur la variable cible)
 train_df["is_train"] = 1
 test_df["is_train"] = 0
 test_df["co2"] = np.nan  # 占位，方便合并
@@ -31,7 +35,14 @@ data = pd.concat([train_df, test_df], sort=False)
 # 2. 对文本类变量进行one-hot编码；
 # 3. 数值型变量缺失值填充（这里用中位数填充）
 
+# en français: prétraitement simple:
+# 1. supprimer le champ id (qui ne sera pas utilisé pour l'entraînement du modèle);
+# 2. encoder one-hot les variables de texte;
+# 3. remplir les valeurs manquantes des variables numériques (ici, avec la médiane).
+
+
 # 去除id字段并记录
+# en français: supprimer le champ id et enregistrer
 data_index = data["id"]
 data = data.drop("id", axis=1)
 
